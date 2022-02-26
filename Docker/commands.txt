@@ -1,0 +1,3 @@
+docker exec -it kafka /bin/sh
+cd opt/kafka***/bin 
+kafka-console-consume.sh --bootstrap-server localhost:9092 --topic userRegistration
