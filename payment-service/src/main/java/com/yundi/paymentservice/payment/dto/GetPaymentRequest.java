@@ -11,5 +11,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class GetPaymentRequest {
     private String cardId;
-    private BigDecimal price;
+    private double price;
 }

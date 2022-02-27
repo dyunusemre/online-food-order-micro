@@ -35,7 +35,7 @@ public class UserOrderServiceImpl implements UserOrderService {
     }
 
     public void makePaymentAndSendEvent(CreateOrderRequest createOrderRequest) {
-        PaymentResponse response = paymentClient.doPayment(getPaymentRequest(createOrderRequest.getCard().getCardId(), createOrderRequest.getTotalBasketPrice()));
+        PaymentResponse response = paymentClient.doPayment(getPaymentRequest(createOrderRequest.getCardId(), createOrderRequest.getTotalBasketPrice()));
         if (response != null) {
             kafkaOrderProducer.sendCreatedOrderEvent(createOrderRequest);
         }
@@ -43,7 +43,7 @@ public class UserOrderServiceImpl implements UserOrderService {
 
     private UserOrder getUserOrder(CreateOrderRequest createOrderRequest) {
         return UserOrder.builder()
-                .userId(createOrderRequest.getUser().getUserId())
+                .userId(createOrderRequest.getUser().getUsername())
                 .totalBasket(createOrderRequest.getTotalBasketPrice())
                 .build();
     }

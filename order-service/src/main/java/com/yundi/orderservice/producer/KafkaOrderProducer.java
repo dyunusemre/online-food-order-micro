@@ -14,7 +14,7 @@ public class KafkaOrderProducer {
     private static final String BINDING_NAME = "userOrder";
     private final StreamBridge streamBridge;
 
-    @Async
+
     public void sendCreatedOrderEvent(CreateOrderRequest createOrderRequest) {
         streamBridge.send(BINDING_NAME, getOrderData(createOrderRequest));
         log.info("Created Order Information sent {}", "null");
