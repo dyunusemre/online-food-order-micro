@@ -1,4 +1,4 @@
-package com.yundi.userservice.domain.model;
+package com.yundi.userservice.user.model;
 
 import com.yundi.userservice.consumer.UserData;
 import lombok.*;

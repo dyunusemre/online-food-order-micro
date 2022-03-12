@@ -1,6 +1,6 @@
 package com.yundi.userservice.consumer;
 
-import com.yundi.userservice.domain.model.User;
+import com.yundi.userservice.user.model.User;
 import com.yundi.userservice.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

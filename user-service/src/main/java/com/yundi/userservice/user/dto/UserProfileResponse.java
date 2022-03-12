@@ -1,6 +1,6 @@
 package com.yundi.userservice.user.dto;
 
-import com.yundi.userservice.domain.model.Address;
+import com.yundi.userservice.user.model.Address;
 import lombok.*;
 
 @Getter

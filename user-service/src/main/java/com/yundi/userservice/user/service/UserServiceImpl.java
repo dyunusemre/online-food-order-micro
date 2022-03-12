@@ -1,7 +1,7 @@
 package com.yundi.userservice.user.service;
 
-import com.yundi.userservice.domain.model.User;
-import com.yundi.userservice.domain.repository.UserRepository;
+import com.yundi.userservice.user.model.User;
+import com.yundi.userservice.user.repository.UserRepository;
 import com.yundi.userservice.user.dto.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

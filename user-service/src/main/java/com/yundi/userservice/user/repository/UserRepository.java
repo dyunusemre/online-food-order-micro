@@ -1,6 +1,6 @@
-package com.yundi.userservice.domain.repository;
+package com.yundi.userservice.user.repository;
 
-import com.yundi.userservice.domain.model.User;
+import com.yundi.userservice.user.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
