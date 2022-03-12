@@ -8,6 +8,7 @@ import com.yundi.authservice.security.jwt.JwtUtil;
 import com.yundi.authservice.userauth.model.UserAuth;
 import com.yundi.authservice.userauth.service.UserAuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -26,7 +28,7 @@ public class AuthService {
     private final KafkaProducer kafkaProducer;
 
     public AuthenticationResponse sendUserAndGetAccessTokenByRegister(RegisterRequest registerRequest) {
-        UserAuth userAuth = saveUserAndSenMessage(registerRequest);
+        UserAuth userAuth = saveUserAndSendEvent(registerRequest);
         UserDetails userDetails = userAuthService.findUserDetailsByUsername(userAuth.getUsername());
         return createTokens(userDetails);
     }
@@ -45,7 +47,7 @@ public class AuthService {
                 .build();
     }
 
-    private UserAuth saveUserAndSenMessage(RegisterRequest registerRequest) {
+    private UserAuth saveUserAndSendEvent(RegisterRequest registerRequest) {
         UserAuth userAuth = userAuthService.saveAuth(UserAuth.builder()
                 .username(registerRequest.getUsername())
                 .password(registerRequest.getPassword())
@@ -76,6 +78,7 @@ public class AuthService {
         try {
             UserDetails userDetails = userAuthService.findUserDetailsByUsername(username);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), password);
+            log.info("{} Logged in", username);
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         } catch (Exception ex) {
             throw new RuntimeException("Bad Credentials");

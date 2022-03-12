@@ -19,20 +19,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomUserDetailService customUserDetailService;
     private final CustomAuthorizationFilter customAuthorizationFilter;
 
     private static final String[] NO_AUTH_LIST = {
-            "/auth/login",
-            "/auth/refresh",
-            "/auth/sign-up"
+            "/api/v1/auth/login",
+            "/api/v1/auth/refresh",
+            "/api/v1/auth/sign-up"
     };
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(customUserDetailService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Override
@@ -48,5 +47,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

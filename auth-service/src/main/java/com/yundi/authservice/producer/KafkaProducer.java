@@ -15,7 +15,7 @@ public class KafkaProducer {
 
     public void sendRegisteredUserMessage(RegisterRequest registerRequest) {
         streamBridge.send(BINDING_NAME, getUserData(registerRequest));
-        log.info("Created User Information sent {}", registerRequest);
+        log.info("Created User => {} Information sent", registerRequest);
     }
 
     private UserData getUserData(RegisterRequest registerRequest) {

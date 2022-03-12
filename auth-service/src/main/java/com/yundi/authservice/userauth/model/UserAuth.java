@@ -18,9 +18,7 @@ public class UserAuth {
     @Id
     private String id;
     private String username;
-
     private String password;
-
     @DBRef
     private Set<Role> roles;
 }

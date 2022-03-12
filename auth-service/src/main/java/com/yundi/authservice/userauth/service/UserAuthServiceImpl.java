@@ -27,12 +27,9 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public UserAuth saveAuth(UserAuth userAuth) {
+        userValidations(userAuth);
         userAuth.setRoles(findRoleByName(RoleEnum.ROLE_USER));
         userAuth.setPassword(encoder.encode(userAuth.getPassword()));
-
-        if (isUsernameUnique(userAuth.getUsername()))
-            throw new RuntimeException("Username is exists");
-
         return userAuthRepository.save(userAuth);
     }
 
@@ -52,6 +49,11 @@ public class UserAuthServiceImpl implements UserAuthService {
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toSet());
+    }
+
+    private void userValidations(UserAuth userAuth) {
+        if (isUsernameUnique(userAuth.getUsername()))
+            throw new RuntimeException("Username is exists");
     }
 
     private boolean isUsernameUnique(String username) {
