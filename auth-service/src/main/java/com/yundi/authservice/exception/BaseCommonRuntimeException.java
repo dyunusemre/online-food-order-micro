@@ -7,9 +7,10 @@ import lombok.Setter;
 @Setter
 public class BaseCommonRuntimeException extends RuntimeException {
     private final ApiErrorCode apiErrorCode;
+    private final String message;
 
     public BaseCommonRuntimeException(String message, ApiErrorCode apiErrorCode) {
-        super(message);
+        this.message = message;
         this.apiErrorCode = apiErrorCode;
     }
 }
