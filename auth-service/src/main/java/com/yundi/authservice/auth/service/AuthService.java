@@ -3,6 +3,8 @@ package com.yundi.authservice.auth.service;
 import com.yundi.authservice.auth.dto.AuthenticationRequest;
 import com.yundi.authservice.auth.dto.AuthenticationResponse;
 import com.yundi.authservice.auth.dto.RegisterRequest;
+import com.yundi.authservice.exception.CredentialException;
+import com.yundi.authservice.exception.TokenException;
 import com.yundi.authservice.producer.KafkaProducer;
 import com.yundi.authservice.security.jwt.JwtUtil;
 import com.yundi.authservice.userauth.model.UserAuth;
@@ -69,7 +71,7 @@ public class AuthService {
     private String getRefreshToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         if (authorization.isEmpty())
-            throw new RuntimeException("Refresh Token is missing");
+            throw new TokenException();
 
         return authorization.substring("Bearer ".length());
     }
@@ -81,7 +83,7 @@ public class AuthService {
             log.info("{} Logged in", username);
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         } catch (Exception ex) {
-            throw new RuntimeException("Bad Credentials");
+            throw new CredentialException();
         }
     }
 }

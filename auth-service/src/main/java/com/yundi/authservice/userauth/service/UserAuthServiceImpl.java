@@ -1,5 +1,6 @@
 package com.yundi.authservice.userauth.service;
 
+import com.yundi.authservice.exception.AlreadyExistsException;
 import com.yundi.authservice.userauth.enums.RoleEnum;
 import com.yundi.authservice.userauth.model.Role;
 import com.yundi.authservice.userauth.model.UserAuth;
@@ -53,7 +54,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     private void userValidations(UserAuth userAuth) {
         if (isUsernameUnique(userAuth.getUsername()))
-            throw new RuntimeException("Username is exists");
+            throw new AlreadyExistsException();
     }
 
     private boolean isUsernameUnique(String username) {
