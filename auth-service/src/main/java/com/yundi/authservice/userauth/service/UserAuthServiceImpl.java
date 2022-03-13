@@ -24,25 +24,20 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     private final PasswordEncoder encoder;
     private final UserAuthRepository userAuthRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Override
-    public UserAuth saveAuth(UserAuth userAuth) {
+    public UserAuth saveUserAuth(UserAuth userAuth) {
         userValidations(userAuth);
-        userAuth.setRoles(findRoleByName(RoleEnum.ROLE_USER));
+        userAuth.setRoles(roleService.findRoleByName(RoleEnum.ROLE_USER));
         userAuth.setPassword(encoder.encode(userAuth.getPassword()));
         return userAuthRepository.save(userAuth);
     }
 
     @Override
-    public UserDetails findUserDetailsByUsername(String username) {
+    public UserDetails findUserAuthDetailsByUsername(String username) {
         UserAuth userAuth = userAuthRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
         return new org.springframework.security.core.userdetails.User(userAuth.getUsername(), userAuth.getPassword(), getAuthorities(userAuth));
-    }
-
-    @Override
-    public Set<Role> findRoleByName(RoleEnum name) {
-        return Collections.singleton(roleRepository.findByName(name).orElseThrow(() -> new RuntimeException("Role Couldnt Fine")));
     }
 
     private Set<GrantedAuthority> getAuthorities(UserAuth user) {

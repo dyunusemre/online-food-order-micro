@@ -30,8 +30,8 @@ public class AuthService {
     private final KafkaProducer kafkaProducer;
 
     public AuthenticationResponse sendUserAndGetAccessTokenByRegister(RegisterRequest registerRequest) {
-        UserAuth userAuth = saveUserAndSendEvent(registerRequest);
-        UserDetails userDetails = userAuthService.findUserDetailsByUsername(userAuth.getUsername());
+        UserAuth userAuth = saveUserAuthAndSendUserData(registerRequest);
+        UserDetails userDetails = userAuthService.findUserAuthDetailsByUsername(userAuth.getUsername());
         return createTokens(userDetails);
     }
 
@@ -49,8 +49,8 @@ public class AuthService {
                 .build();
     }
 
-    private UserAuth saveUserAndSendEvent(RegisterRequest registerRequest) {
-        UserAuth userAuth = userAuthService.saveAuth(UserAuth.builder()
+    private UserAuth saveUserAuthAndSendUserData(RegisterRequest registerRequest) {
+        UserAuth userAuth = userAuthService.saveUserAuth(UserAuth.builder()
                 .username(registerRequest.getUsername())
                 .password(registerRequest.getPassword())
                 .build());
@@ -78,7 +78,7 @@ public class AuthService {
 
     private Authentication authenticateUser(String username, String password) {
         try {
-            UserDetails userDetails = userAuthService.findUserDetailsByUsername(username);
+            UserDetails userDetails = userAuthService.findUserAuthDetailsByUsername(username);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), password);
             log.info("{} Logged in", username);
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
